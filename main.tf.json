@@ -1,32 +1,106 @@
 {
+    "provider": [
+        {
+            "azurerm": [
+                {
+                    "features": [
+                        {}
+                    ]
+                }
+            ]
+        }
+    ],
     "resource": [
         {
-            "google_compute_instance": [
+            "azurerm_resource_group": [
                 {
-                    "hello-world": [
+                    "example": [
                         {
-                            "allow_stopping_for_update": true,
-                            "boot_disk": [
+                            "location": "West Europe",
+                            "name": "example-resources"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "azurerm_virtual_network": [
+                {
+                    "example": [
+                        {
+                            "address_space": [
+                                "10.0.0.0/16"
+                            ],
+                            "location": "West Europe",
+                            "name": "example-network",
+                            "resource_group_name": "example-resources"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "azurerm_subnet": [
+                {
+                    "example": [
+                        {
+                            "address_prefixes": [
+                                "10.0.2.0/24"
+                            ],
+                            "name": "internal",
+                            "resource_group_name": "example-resources",
+                            "virtual_network_name": "example-network"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "azurerm_network_interface": [
+                {
+                    "example": [
+                        {
+                            "ip_configuration": [
                                 {
-                                    "initialize_params": [
-                                        {
-                                            "image": "ubuntu-1804-lts"
-                                        }
-                                    ]
+                                    "name": "internal",
+                                    "private_ip_address_allocation": "Dynamic"
                                 }
                             ],
-                            "labels": {
-                                "name": "hello-world",
-                                "purpose": "manning-infrastructure-as-code"
-                            },
-                            "machine_type": "e2-micro",
-                            "name": "hello-world",
-                            "network_interface": [
+                            "location": "West Europe",
+                            "name": "example-nic",
+                            "resource_group_name": "example-resources"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "azurerm_linux_virtual_machine": [
+                {
+                    "example": [
+                        {
+                            "admin_username": "adminuser",
+                            "location": "West Europe",
+                            "name": "example-machine",
+                            "network_interface_ids": [
+                                "${azurerm_network_interface.example.id}"
+                            ],
+                            "os_disk": [
                                 {
-                                    "network": "default"
+                                    "caching": "ReadWrite",
+                                    "storage_account_type": "Standard_LRS"
                                 }
                             ],
-                            "zone": "us-central1-a"
+                            "resource_group_name": "example-resources",
+                            "size": "Standard_F2",
+                            "source_image_reference": [
+                                {
+                                    "offer": "UbuntuServer",
+                                    "publisher": "Canonical",
+                                    "sku": "16.04-LTS",
+                                    "version": "latest"
+                                }
+                            ]
                         }
                     ]
                 }
