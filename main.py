@@ -1,7 +1,6 @@
 import json
 
-
-def hello_server(name, network):
+def hello_server(name, network, publicKey):
     return {
     "provider": [
         {
@@ -53,7 +52,7 @@ def hello_server(name, network):
               ],
               "name": "internal",
               "resource_group_name": "example-resources",
-              "virtual_network_name": "example-network"
+              "virtual_network_name": "${azurerm_virtual_network.example.name}"
             }
           ]
         }
@@ -67,6 +66,7 @@ def hello_server(name, network):
               "ip_configuration": [
                 {
                   "name": "internal",
+                  "subnet_id": "${azurerm_subnet.example.id}",
                   "private_ip_address_allocation": "Dynamic"
                 }
               ],
@@ -89,6 +89,12 @@ def hello_server(name, network):
               ],
               "location": "West Europe",
               "name": "example-machine",
+              "admin_ssh_key": [
+                {
+                  "username": "adminuser",
+                  "public_key": publicKey
+                }
+              ],
               "os_disk": [
                 {
                   "caching": "ReadWrite",
@@ -114,7 +120,10 @@ def hello_server(name, network):
 }
 
 if __name__ == "__main__":
-    config = hello_server(name='hello-world', network='default')
+    with open('C:\\Users\\tdc\\.ssh\\id_rsa.pub') as f:
+        key = f.readline()
+
+    config = hello_server(name='hello-world', network='default', publicKey=key)
 
     with open('main.tf.json', 'w') as outfile:
         json.dump(config, outfile, sort_keys=True, indent=4)
