@@ -4,7 +4,7 @@ class LinuxServerAzure:
   def __init__(self, location="West Europe"):
     self.name = 'linuxvm'
     self.location = location
-    with open('C:\\Users\\tdc\\.ssh\\id_rsa.pub') as f:
+    with open('C:\\temp\\key\\.ssh\\id_rsa.pub') as f:
         self.key = f.readline()
     self.reource = self._build()
 
