@@ -18,18 +18,18 @@ if __name__ == "__main__":
     vm = VmFactoryModule(location, "MyFancyVm", key, resourceGroup)
 
     resource = {
-    "provider": [
-            {
-            "azurerm": [
-                {
-                "features": [
-                    {}
-                ]
-                }
-            ]
-            }
-        ],
-        "resource": resourceGroup.build() + network.build() + interface.build() + vm.build()
+      "provider": [
+              {
+              "azurerm": [
+                  {
+                  "features": [
+                      {}
+                  ]
+                  }
+              ]
+              }
+          ],
+          "resource": resourceGroup.build() + network.build() + interface.build() + vm.build()
     }
 
     with open('main.tf.json', 'w') as outfile:
