@@ -3,6 +3,7 @@ from modules.network import NetworkFactoryModule
 from modules.networkinterface import NetworkInterfaceFactoryModule
 
 from modules.resourcegroup import ResourceFactoryModule
+from modules.subnet import SubnetFactoryModule
 from modules.vm import VmFactoryModule
 
 if __name__ == "__main__":
@@ -11,9 +12,9 @@ if __name__ == "__main__":
     with open('C:\\temp\\key\\.ssh\\id_rsa.pub') as f:
         key = f.readline()
 
-
     resourceGroup = ResourceFactoryModule(location, "DevelopmentResource")
-    network = NetworkFactoryModule(location, "dev-network", "dev-network-sub", resourceGroup)
+    network = NetworkFactoryModule(location, "dev-network", resourceGroup, "10.0.0.0/16")
+    subnet = SubnetFactoryModule("dev-subnet", resourceGroup, "10.0.2.0/24")
     interface = NetworkInterfaceFactoryModule(location, "dev-interface", resourceGroup)
     vm = VmFactoryModule(location, "MyFancyVm", key, resourceGroup)
 
@@ -29,7 +30,7 @@ if __name__ == "__main__":
               ]
               }
           ],
-          "resource": resourceGroup.build() + network.build() + interface.build() + vm.build()
+          "resource": resourceGroup.build() + network.build() + subnet.build() + interface.build() + vm.build()
     }
 
     with open('main.tf.json', 'w') as outfile:
